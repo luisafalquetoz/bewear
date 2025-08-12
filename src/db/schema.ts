@@ -55,6 +55,19 @@ export const accountTable = pgTable("account", {
   updatedAt: timestamp("updated_at").notNull(),
 });
 
+export const verificationTable = pgTable("verification", {
+  id: text("id").primaryKey(),
+  identifier: text("identifier").notNull(),
+  value: text("value").notNull(),
+  expiresAt: timestamp("expires_at").notNull(),
+  createdAt: timestamp("created_at").$defaultFn(
+    () => /* @__PURE__ */ new Date(),
+  ),
+  updatedAt: timestamp("updated_at").$defaultFn(
+    () => /* @__PURE__ */ new Date(),
+  ),
+});
+
 export const categoryTable = pgTable("category", {
   id: uuid().primaryKey().defaultRandom(),
   name: text().notNull(),
@@ -77,15 +90,13 @@ export const productTable = pgTable("product", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
-export const productRelations = relations(productTable, ({ one, many }) => {
-  return {
-    category: one(categoryTable, {
-      fields: [productTable.categoryId],
-      references: [categoryTable.id],
-    }),
-    variants: many(productVariantTable),
-  };
-});
+export const productRelations = relations(productTable, ({ one, many }) => ({
+  category: one(categoryTable, {
+    fields: [productTable.categoryId],
+    references: [categoryTable.id],
+  }),
+  variants: many(productVariantTable),
+}));
 
 export const productVariantTable = pgTable("product_variant", {
   id: uuid().primaryKey().defaultRandom(),

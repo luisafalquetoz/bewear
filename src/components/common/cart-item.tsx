@@ -46,9 +46,6 @@ const CartItem = ({
   };
   const handleDecreaseQuantityClick = () => {
     decreaseCartProductQuantityMutation.mutate(undefined, {
-      onSuccess: () => {
-        toast.success("Produto removido");
-      },
       onError: () => {
         toast.error("Erro ao remover produto do carrinho");
       },
@@ -56,9 +53,6 @@ const CartItem = ({
   };
   const handleIncreaseQuantityClick = () => {
     increaseCartProductQuantityMutation.mutate(undefined, {
-      onSuccess: () => {
-        toast.success("Produto adicionado");
-      },
       onError: () => {
         toast.error("Erro ao adicionar produto do carrinho");
       },

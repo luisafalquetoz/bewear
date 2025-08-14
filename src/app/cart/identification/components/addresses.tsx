@@ -82,7 +82,6 @@ const Addresses = ({ shippingAddresses, defaultShippingAddressId }: AddressesPro
       await updateCartShippingAddressMutation.mutateAsync({
         shippingAddressId: newAddress.id,
       });
-      toast.success("Endereço vinculado ao carrinho!");
     } catch (error) {
       toast.error("Erro ao criar endereço. Tente novamente.");
       console.error(error);
@@ -95,7 +94,6 @@ const Addresses = ({ shippingAddresses, defaultShippingAddressId }: AddressesPro
       await updateCartShippingAddressMutation.mutateAsync({
         shippingAddressId: selectedAddress,
       });
-      toast.success("Endereço selecionado para entrega!");
     } catch (error) {
       toast.error("Erro ao selecionar endereço. Tente novamente");
       console.error(error);

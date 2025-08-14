@@ -7,7 +7,7 @@ import { db } from "@/db";
 import { cartTable } from "@/db/schema";
 import { auth } from "@/lib/auth";
 
-import Addresses from "../components/addresses";
+import Addresses from "./components/addresses";
 
 const IdentificationPage = async () => {
   const session = await auth.api.getSession({

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const newAddressFormSchema = z.object({
+export const createShippingAddressSchema = z.object({
   email: z.email("E-mail inválido."),
   fullName: z.string().min(1, "O nome completo é obrigatório."),
   cpf: z.string().min(14, "CPF inválido."),
@@ -14,4 +14,6 @@ export const newAddressFormSchema = z.object({
   state: z.string().min(1, "O estado é obrigatório."),
 });
 
-export type NewAddressFormSchema = z.infer<typeof newAddressFormSchema>;
+export type CreateShippingAddressSchema = z.infer<
+  typeof createShippingAddressSchema
+>;

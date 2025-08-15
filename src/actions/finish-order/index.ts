@@ -4,7 +4,12 @@ import { eq } from "drizzle-orm";
 import { headers } from "next/headers";
 
 import { db } from "@/db";
-import { cartTable, orderItemTable, orderTable } from "@/db/schema";
+import {
+  cartItemTable,
+  cartTable,
+  orderItemTable,
+  orderTable,
+} from "@/db/schema";
 import { auth } from "@/lib/auth";
 
 export const finishOrder = async () => {
@@ -40,13 +45,24 @@ export const finishOrder = async () => {
     if (!cart.shippingAddress) {
       throw new Error("Shipping address not found");
     }
-    const [order] = await db
+    const [order] = await tx
       .insert(orderTable)
       .values({
-        ...cart.shippingAddress!,
+        email: cart.shippingAddress.email,
+        zipCode: cart.shippingAddress.zipCode,
+        country: cart.shippingAddress.country,
+        phone: cart.shippingAddress.phone,
+        cpfOrCnpj: cart.shippingAddress.cpfOrCnpj,
+        city: cart.shippingAddress.city,
+        complement: cart.shippingAddress.complement,
+        neighborhood: cart.shippingAddress.neighborhood,
+        number: cart.shippingAddress.number,
+        recipientName: cart.shippingAddress.recipientName,
+        state: cart.shippingAddress.state,
+        street: cart.shippingAddress.street,
         userId: session.user.id,
         totalPriceInCents,
-        shippingAddressId: cart.shippingAddress.id,
+        shippingAddressId: cart.shippingAddress!.id,
       })
       .returning();
     if (!order) {
@@ -61,5 +77,6 @@ export const finishOrder = async () => {
       }));
     await tx.insert(orderItemTable).values(orderItemsPayload);
     await tx.delete(cartTable).where(eq(cartTable.id, cart.id));
+    await tx.delete(cartItemTable).where(eq(cartItemTable.cartId, cart.id));
   });
 };

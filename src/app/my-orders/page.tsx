@@ -30,9 +30,12 @@ const MyOrdersPage = async () => {
       },
     },
   });
+
+  const categories = await db.query.categoryTable.findMany({});
+  
   return (
     <>
-      <Header />
+      <Header categories={categories} />
       <div className="px-5">
         <h1>Meus Pedidos</h1>
         <Orders

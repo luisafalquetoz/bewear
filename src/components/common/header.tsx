@@ -1,13 +1,22 @@
 "use client";
 
-import { LogInIcon, LogOutIcon, MenuIcon } from "lucide-react";
+import {
+  Home,
+  LogInIcon,
+  LogOutIcon,
+  MenuIcon,
+  ShoppingBasketIcon,
+  Truck,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
+import { categoryTable } from "@/db/schema";
 import { authClient } from "@/lib/auth-client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
+import { Separator } from "../ui/separator";
 import {
   Sheet,
   SheetContent,
@@ -17,7 +26,11 @@ import {
 } from "../ui/sheet";
 import Cart from "./cart";
 
-const Header = () => {
+interface HeaderProps {
+  categories: (typeof categoryTable.$inferSelect)[];
+}
+
+const Header = ({ categories }: HeaderProps) => {
   const { data: session } = authClient.useSession();
 
   return (
@@ -33,7 +46,7 @@ const Header = () => {
               <MenuIcon />
             </Button>
           </SheetTrigger>
-          <SheetContent>
+          <SheetContent className="rounded-3xl">
             <SheetHeader>
               <SheetTitle>Menu</SheetTitle>
             </SheetHeader>
@@ -58,24 +71,79 @@ const Header = () => {
                         </span>
                       </div>
                     </div>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      onClick={() => authClient.signOut()}
-                    >
-                      <LogOutIcon />
-                    </Button>
                   </div>
+                  <div className="py-8">
+                    <Separator />
+                  </div>
+                  <div className="flex flex-col space-y-4 px-4 text-xs font-semibold">
+                    <Link href="/" className="flex gap-2 items-center">
+                      <Home /> Início
+                    </Link>
+                    <Link href="/my-orders" className="flex gap-2 items-center">
+                      <Truck />
+                      Meus Pedidos
+                    </Link>
+                    <Link href="/cart/identification" className="flex gap-2 items-center">
+                      <ShoppingBasketIcon />
+                      Carrinho
+                    </Link>
+                  </div>
+                  <div className="py-8">
+                    <Separator />
+                  </div>
+                  <div className="flex flex-col items-start">
+                    {categories.map((category) => (
+                      <Button
+                        key={category.id}
+                        variant="ghost"
+                        className="rounded-full bg-white text-xs font-semibold"
+                      >
+                        <Link href={`/category/${category.slug}`}>
+                          {category.name}
+                        </Link>
+                      </Button>
+                    ))}
+                  </div>
+                  <div className="py-8">
+                <Separator />
+              </div>
+              <Button
+                variant="outline"
+                className="text-muted-foreground text-xs"
+                onClick={() => authClient.signOut()}
+              >
+                <LogOutIcon />
+                Sair da conta
+              </Button>
                 </>
               ) : (
-                <div className="flex items-center justify-between">
-                  <h2 className="font-semibold">Olá. Faça seu login!</h2>
-                  <Button size="icon" variant="outline" asChild>
-                    <Link href="/authentication">
-                      <LogInIcon />
-                    </Link>
-                  </Button>
-                </div>
+                <>
+                  <div className="flex items-center justify-between">
+                    <h2 className="font-semibold">Olá. Faça seu login!</h2>
+                    <Button className="w-30 rounded-full" asChild>
+                      <Link href="/authentication">
+                        Login
+                        <LogInIcon />
+                      </Link>
+                    </Button>
+                  </div>
+                  {/* <div className="py-8">
+                    <Separator />
+                  </div>
+                  <div className="flex flex-col items-start">
+                    {categories.map((category) => (
+                      <Button
+                        key={category.id}
+                        variant="ghost"
+                        className="rounded-full bg-white text-xs font-semibold"
+                      >
+                        <Link href={`/category/${category.slug}`}>
+                          {category.name}
+                        </Link>
+                      </Button>
+                    ))}
+                  </div> */}
+                </>
               )}
             </div>
           </SheetContent>

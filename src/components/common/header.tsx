@@ -11,11 +11,19 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 
+import AuthenticationTabs from "@/app/authentication/components/authentication-tabs";
 import { categoryTable } from "@/db/schema";
 import { authClient } from "@/lib/auth-client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
 import { Separator } from "../ui/separator";
 import {
   Sheet,
@@ -76,14 +84,17 @@ const Header = ({ categories }: HeaderProps) => {
                     <Separator />
                   </div>
                   <div className="flex flex-col space-y-4 px-4 text-xs font-semibold">
-                    <Link href="/" className="flex gap-2 items-center">
+                    <Link href="/" className="flex items-center gap-2">
                       <Home /> Início
                     </Link>
-                    <Link href="/my-orders" className="flex gap-2 items-center">
+                    <Link href="/my-orders" className="flex items-center gap-2">
                       <Truck />
                       Meus Pedidos
                     </Link>
-                    <Link href="/cart/identification" className="flex gap-2 items-center">
+                    <Link
+                      href="/cart/identification"
+                      className="flex items-center gap-2"
+                    >
                       <ShoppingBasketIcon />
                       Carrinho
                     </Link>
@@ -105,27 +116,35 @@ const Header = ({ categories }: HeaderProps) => {
                     ))}
                   </div>
                   <div className="py-8">
-                <Separator />
-              </div>
-              <Button
-                variant="outline"
-                className="text-muted-foreground text-xs"
-                onClick={() => authClient.signOut()}
-              >
-                <LogOutIcon />
-                Sair da conta
-              </Button>
+                    <Separator />
+                  </div>
+                  <Button
+                    variant="outline"
+                    className="text-muted-foreground text-xs"
+                    onClick={() => authClient.signOut()}
+                  >
+                    <LogOutIcon />
+                    Sair da conta
+                  </Button>
                 </>
               ) : (
                 <>
                   <div className="flex items-center justify-between">
                     <h2 className="font-semibold">Olá. Faça seu login!</h2>
-                    <Button className="w-30 rounded-full" asChild>
-                      <Link href="/authentication">
-                        Login
-                        <LogInIcon />
-                      </Link>
-                    </Button>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button className="w-30 rounded-full">
+                          Login
+                          <LogInIcon />
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Login</DialogTitle>
+                        </DialogHeader>
+                        <AuthenticationTabs />
+                      </DialogContent>
+                    </Dialog>
                   </div>
                   {/* <div className="py-8">
                     <Separator />

@@ -47,9 +47,11 @@ const ConfirmationPage = async () => {
     redirect("/cart/identification");
   }
 
+  const categories = await db.query.categoryTable.findMany({});
+
   return (
     <div>
-      <Header />
+      <Header categories={categories} />
       <div className="space-y-4 px-5">
         <Card>
           <CardHeader>

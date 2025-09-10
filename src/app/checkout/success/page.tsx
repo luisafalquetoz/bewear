@@ -14,9 +14,10 @@ import {
 } from "@/components/ui/dialog";
 
 const CheckoutSuccessPage = () => {
+
   return (
     <>
-      <Header />
+      <Header categories={undefined} />
       <Dialog open={true} onOpenChange={() => {}}>
         <DialogContent className="text-center">
           <Image

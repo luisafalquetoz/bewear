@@ -35,7 +35,7 @@ import {
 import Cart from "./cart";
 
 interface HeaderProps {
-  categories: (typeof categoryTable.$inferSelect)[];
+  categories: (typeof categoryTable.$inferSelect)[] | undefined;
 }
 
 const Header = ({ categories }: HeaderProps) => {
@@ -103,7 +103,7 @@ const Header = ({ categories }: HeaderProps) => {
                     <Separator />
                   </div>
                   <div className="flex flex-col items-start">
-                    {categories.map((category) => (
+                    {categories?.map((category) => (
                       <Button
                         key={category.id}
                         variant="ghost"
@@ -146,11 +146,11 @@ const Header = ({ categories }: HeaderProps) => {
                       </DialogContent>
                     </Dialog>
                   </div>
-                  {/* <div className="py-8">
+                  <div className="py-8">
                     <Separator />
                   </div>
                   <div className="flex flex-col items-start">
-                    {categories.map((category) => (
+                    {categories?.map((category) => (
                       <Button
                         key={category.id}
                         variant="ghost"
@@ -161,7 +161,7 @@ const Header = ({ categories }: HeaderProps) => {
                         </Link>
                       </Button>
                     ))}
-                  </div> */}
+                  </div>
                 </>
               )}
             </div>
